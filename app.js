@@ -10,13 +10,13 @@ var restify = require('restify');
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
+
 const app = express();
 
 app.use(express.static("public"));
 app.set('view engine','ejs');
 
 app.use(cors())
-
 
 
 app.use(bodyParser.urlencoded({
@@ -74,11 +74,12 @@ app.get("/failed", function (req, res) {
 });
 
 app.get("/good", function (req, res,isLoggedIn) {
-    res.redirect("/");
+    res.send("woah logged In");
 });
 app.get('/google',
     passport.authenticate('google', {
-        scope: ['profile', 'email']
+        scope: ['profile', 'email'],
+        prompt: 'select_account'
     }));
 
 app.get('/google/callback',
