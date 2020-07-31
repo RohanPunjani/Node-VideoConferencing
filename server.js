@@ -11,10 +11,9 @@ app.use(express.static('public'))
 
 app.get('/', (req,res) => {
     res.render('home')
-    // res.redirect(`/${uuidV4()}`)
 })
 app.get('/create', (req,res) => {
-    res.render('create')
+    res.render('create', {roomId: `/${uuidV4()}`})
 })
 app.get('/join', (req,res) => {
     res.render('join')

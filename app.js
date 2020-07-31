@@ -5,9 +5,9 @@ const cors = require('cors')
 const bodyParser = require("body-parser");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
+var restify = require('restify');
 //const session = require("express-session");
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
-
 
 
 const app = express();
@@ -16,6 +16,7 @@ app.use(express.static("public"));
 app.set('view engine','ejs');
 
 app.use(cors())
+
 
 
 app.use(bodyParser.urlencoded({
@@ -37,10 +38,10 @@ passport.serializeUser(function(user, done) {
   });
   
   passport.deserializeUser(function(id, done) {
-    console.log('Deserialize user called.');
-    return done(null, { firstName: 'Foo', lastName: 'Bar' });
+    return done(false, { firstName: 'Foo', lastName: 'Bar' });
   });
 
+  app.use(restify.plugins.queryParser({ mapParams: false }));
 
 
   const isLoggedIn = function(req,res,next){
@@ -62,6 +63,8 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+
+
 app.get("/",function(req,res){
     res.send("woah");
 });
@@ -70,8 +73,8 @@ app.get("/failed", function (req, res) {
     res.send("You're failed To Login ,press F to continue");
 });
 
-app.get("/good", (isLoggedIn,req, res) => {
-    res.redirect("/good");
+app.get("/good", function (req, res,isLoggedIn) {
+    res.redirect("/");
 });
 app.get('/google',
     passport.authenticate('google', {
@@ -80,12 +83,14 @@ app.get('/google',
 
 app.get('/google/callback',
     passport.authenticate('google', {
-        failureRedirect: '/failed   '
+        failureRedirect: '/failed'
     }),
     function (req, res) {
         // Successful authentication, redirect home.
         res.redirect('/good');
     });
+
+
 
 app.get("/logout",function(req,res){
     req.session = null;
