@@ -70,7 +70,7 @@ app.get("/failed", function (req, res) {
     res.send("You're failed To Login ,press F to continue");
 });
 
-app.get("/good", function (isLoggedIn,req, res) {
+app.get("/good", (isLoggedIn,req, res) => {
     res.redirect("/good");
 });
 app.get('/google',

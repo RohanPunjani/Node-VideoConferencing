@@ -10,7 +10,14 @@ app.set('view engine', 'ejs')
 app.use(express.static('public'))
 
 app.get('/', (req,res) => {
-    res.redirect(`/${uuidV4()}`)
+    res.render('home')
+    // res.redirect(`/${uuidV4()}`)
+})
+app.get('/create', (req,res) => {
+    res.render('create')
+})
+app.get('/join', (req,res) => {
+    res.render('join')
 })
 
 app.get('/:room', (req, res) => {

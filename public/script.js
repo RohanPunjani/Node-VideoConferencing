@@ -6,6 +6,7 @@ var myPeer = new Peer(undefined, {
 })
 
 const myVideo = document.createElement('video')
+myVideo.classList.add("col-md-4", "col-sm-12", "col-ld-3")
 myVideo.muted = true
 
 const peers = {}
@@ -18,6 +19,7 @@ navigator.mediaDevices.getUserMedia({
     myPeer.on('call', call => {
         call.answer(stream)
         const video = document.createElement('video')
+        video.classList.add("col-md-4", "col-sm-12", "col-ld-3")
         call.on('stream', userVideoStream => {
             addVideoStream(video, userVideoStream)
         })
@@ -46,7 +48,6 @@ function connectToNewUser(userId, stream){
     call.on('close', () => {
         video.remove()
     })
-
     peers[userId] = call
 }
 

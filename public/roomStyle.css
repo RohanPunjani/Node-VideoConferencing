@@ -8,10 +8,20 @@ html,body{
     display: flex;
     align-items: center;
     justify-content: center;
-}
+} 
 #video-grid{
     display: flex;
-    align-items: center;
     justify-content: center;
-    width: 100vw;
+    height: 500px;
+    margin: 0
+}
+.row{
+    min-height: 50vh;
+}
+.col-md-4{
+    padding: 0;
+}
+video{
+    /* height: 100%; */
+    object-fit: cover;
 }

@@ -8,19 +8,99 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        html,body{
+            height: 100vh;
+            width: 100vw;
+        }
+        .container{
+            height: 90vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+        }
+        #myVideo{
+            padding: 0 70px;
+            height: 50vh;
+        }
+        html,body{
+            height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .container{
+            height: 90vh;
+            width: 100vw;
+            margin: 0 10vw
+        }
+        .para h1{
+            margin: 0 0 20px 0;
+            font-weight: 700;
+            font-size: 3rem;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, Geneva, Tahoma, serif;
+        }
+        .para p{
+            margin: 20px 0 20px 0;
+            font-size: 18px;
+            color: rgba(0,0,0,0.7)
+        }
+        .para button{
+            padding: 16px 42px;
+            line-height: 18px;
+            font-size: 18px;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            margin:0 10px 0 0 ;
+        }
+    </style>
+    <script>
+        function loaded(){
+            myVideo = document.getElementById('myVideo')
+            myVideo.muted = true
+            navigator.mediaDevices.getUserMedia({
+                video: true,
+                audio: true
+            }).then(stream => {
+                myVideo.srcObject = stream;
+                myVideo.addEventListener('loadedmetadata', () => {
+                    myVideo.play();
+                })
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    </script>
 </head>
-<body>
-    <h1>Bottom here is video</h1>
-    <div class="border">
-        
-    <div>
-        <video src="">Video</video>
-    </div>    
+<body onload="loaded()">
+    <nav class="navbar navbar-expand-sm navbar-light" style="background-color: transparent">
+        <a class="navbar-brand" href="#">WE-dio</a>
+        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+            aria-expanded="false" aria-label="Toggle navigation"></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <div class="container">
+        <video id='myVideo'></video>
+        <div class="para">
+            <h1>Meeting created </h1>
+            <hr>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo natus reiciendis beatae. Id molestias distinctio optio repellat iusto aut, perferendis beatae</p>
+            <hr>
+            <button class="btn btn-info">olo</button>
+        </div>
     </div>
-    
-    
-    <h1>Till here</h1>
-    <a href=""><button type="button" class="btn btn-primary">Invite</button></a>
+
+
 </body>
 </html>
