@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Meeting</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Raleway:300,400i,900");
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Raleway", sans-serif;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    .grid-container {
+      width: 95%;
+      max-width: 1200px;
+      height: 100vh;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 1em;
+    }
+
+    @media (min-width: 52em) {
+      .grid-container {
+        grid-template-columns: repeat(auto-fit, minmax(15em, 1fr));
+      }
+    }
+
+    .our-team {
+      background: #0b2027;
+      padding: 5em 0;
+      color: rgba(248, 248, 248, 0.6);
+    }
+
+    .team-description {
+      grid-column: span 2;
+    }
+
+    @media (min-width: 52em) {
+      .team-description {
+        grid-column: auto;
+        grid-row: span 2;
+        align-self: center;
+      }
+    }
+
+    .team-title {
+      text-transform: uppercase;
+      font-weight: 300;
+      font-size: 5rem;
+      color: #f8f8f8;
+      margin-top: 0;
+      line-height: 1;
+    }
+
+    .team-title span {
+      display: block;
+      font-weight: 900;
+    }
+
+    .team-member {
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+  </style>
+  <script>
+    const ROOM_ID = "<%= roomId %>"
+    const USER_ID = "<%= user.id %>"
+  </script>
+  <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
+  <script src="/socket.io/socket.io.js" defer></script>
+  <script src="js/script.js" defer></script>
+</head>
+
+<body>
+  <section class="our-team">
+    <div class="grid-container" id="video-grid">
+      <div class="team-description">
+        <h1 class="team-title">Our <span>VC APP</span></h1>
+        <p>The joining link is blablaablablabla.com<br>The host is blahblah<br>&copy; WE-dio</p>
+      </div>
+      <!-- <figure class="team-member">
+        <img src="dragon.jpg" alt="" width="50%">
+
+      </figure>
+      <figure class="team-member">
+        <img src="dragon.jpg" alt="" width="50%">
+
+      </figure>
+      <figure class="team-member">
+        <img src="dragon.jpg" alt="" width="50%">
+
+      </figure>
+      <figure class="team-member">
+        <img src="dragon.jpg" alt="" width="50%">
+
+      </figure>
+      <figure class="team-member">
+        <img src="dragon.jpg" alt="" width="50%">
+
+      </figure>
+      <figure class="team-member">
+        <img src="dragon.jpg" alt="" width="50%">
+
+      </figure> -->
+    </div>
+  </section>
+</body>
+
+</html>

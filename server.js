@@ -90,16 +90,16 @@ app.get("/logout", checkAuthentication, (req,res) => {
     res.redirect("/home");
 })
 app.get('/:room', checkAuthentication, (req, res) => {
-    res.render('room', {roomId: req.params.room, userId: userprofile.id })
+    res.render('grid', {roomId: req.params.room, user: userprofile })
 })
 
 //io
 io.on('connection', socket => {
-    socket.on('join-room', (roomId) => {
+    socket.on('join-room', (roomId, userId) => {
         socket.join(roomId)
-        socket.to(roomId).broadcast.emit('user-connected', userprofile.id);
+        socket.to(roomId).broadcast.emit('user-connected', userId);
         socket.on('disconnect', () => {
-            socket.to(roomId).broadcast.emit('user-disconnected', userprofile.id)
+            socket.to(roomId).broadcast.emit('user-disconnected', userId)
         })
     })
 })
