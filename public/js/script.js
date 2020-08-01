@@ -1,3 +1,4 @@
+//jshint esversion:6
 const socket = io('/')
 const vgrid = document.getElementById('video-grid')
 var myPeer = new Peer(undefined, {

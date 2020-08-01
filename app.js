@@ -34,6 +34,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.serializeUser(function(user, done) {
+    console.log("Logged in as " + user.displayName)
     done(null, user);
   });
   
@@ -73,9 +74,6 @@ app.get("/failed", function (req, res) {
     res.send("You're failed To Login ,press F to continue");
 });
 
-app.get("/good", function (req, res,isLoggedIn) {
-    res.redirect("/");
-});
 app.get('/google',
     passport.authenticate('google', {
         scope: ['profile', 'email']
@@ -97,8 +95,3 @@ app.get("/logout",function(req,res){
     req.logout();
     res.redirect("/");
 })
-
-
-app.listen(3000, function () {
-    console.log("port started on 3000");
-});
