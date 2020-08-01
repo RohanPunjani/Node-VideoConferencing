@@ -1,7 +1,7 @@
 //jshint esversion:6
 const socket = io('/')
 const vgrid = document.getElementById('video-grid')
-var myPeer = new Peer(undefined, {
+var myPeer = new Peer( USER_ID, {
     host: '/',
     port: '3001'
 })
@@ -36,8 +36,9 @@ socket.on('user-disconnected', userId => {
     if(peers[userId]) peers[userId].close()
 })    
 
-myPeer.on('open', id => {
-    socket.emit('join-room', ROOM_ID, id)
+myPeer.on('open', () => {
+    socket.emit('join-room', ROOM_ID, USER_ID)
+    console.log(USER_ID)
 })
 
 function connectToNewUser(userId, stream){

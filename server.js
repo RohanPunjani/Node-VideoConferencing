@@ -1,6 +1,5 @@
 //jshint esversion:6
 const express = require('express')
-const { Socket } = require('dgram')
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
@@ -11,10 +10,11 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 const cookieSession = require("cookie-session");
 var restify = require('restify');
+const { request } = require('http')
+const url = require('url')
 var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-
-app.set('view engine', 'ejs')
+app.set('view engine', 'ejs') 
 
 // Middlewares
 app.use(express.static('public'))
@@ -29,43 +29,29 @@ app.use(passport.session());
 app.use(restify.plugins.queryParser({ mapParams: false }));
 
 
+var userprofile;
 //passport
-let user ={
-    id: '',
-    name: ''
-}
 passport.serializeUser(function(user, done) {
-    // user.id = user.id;
-    // user.name = user.displayName;
-    // console.log("USer => ", user.name);
-    req.session.userId = user.id;
-    req.session.username = user.displayName;
     done(null, user);
 });
-
 passport.deserializeUser(function(id, done) {
-    user.id = '';
-    user.name = '';
-    return done(false, { firstName: 'Foo', lastName: 'Bar' });
+    return done(false, null );
 });
 
-
-
-const isLoggedIn = function(req,res,next){
-    if(req.user){
+function checkAuthentication(req,res,next){
+    if(userprofile){
         next();
-    }else{
-        res.sendStatus(401);
+    } else{
+        res.redirect("/home");
     }
 }
-
-
 passport.use(new GoogleStrategy({
     clientID: "189132062627-u5voq0flg0idbfhq5jf3oolo8a2ohmtd.apps.googleusercontent.com",
     clientSecret: "gjYJP396uGK8CFA9WkyMUtv3",
     callbackURL: "http://localhost:3000/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
+      userprofile = profile;
       return done(null, profile);
   }
 ));
@@ -74,16 +60,14 @@ passport.use(new GoogleStrategy({
 
 
 // Routes :)
-app.get('/home', (req,res) => {
-    user.id= req.session.userId,
-    user.name= req.session.userName,
-    console.log(user)
-    res.render('home', {user: user});
+app.get('/home', (req, res) => {
+    res.render('home', {user: userprofile});
 })
-app.get('/create', (req,res) => {
-    res.render('create', {roomId: `/${uuidV4()}`})
+app.get('/create', checkAuthentication, (req,res) => {
+    const roomid =  Math.random().toString(36).substr(2, 9);
+    res.render('create', {roomId: `/${roomid}`, user: userprofile})
 })
-app.get('/join', (req,res) => {
+app.get('/join', checkAuthentication,(req, res) => {
     res.render('join')
 })
 app.get('/google', passport.authenticate('google', {
@@ -92,32 +76,30 @@ app.get('/google', passport.authenticate('google', {
 app.get('/google/callback', passport.authenticate('google', {
     failureRedirect: '/failed'
 }),(req, res) => {
-    req.session.userId = req.user.id;
-    req.session.userName = req.user.displayName;
-    console.log("At success " + user.id);
-    // res.redirect('/home');
+    console.log(req.user);
+    res.redirect("/home");
 });
-app.get("/failed", function (req, res) {
+app.get("/failed", (req, res) => {
     res.send("You're failed To Login ,press F to continue");
 });
-app.get("/logout",function(req,res){
+app.get("/logout", checkAuthentication, (req,res) => {
     req.session = null;
+    userprofile = null;
+    req.user = null;
     req.logout();
     res.redirect("/home");
 })
-app.get('/:room', (req, res) => {
-    res.render('room', {roomId: req.params.room})
+app.get('/:room', checkAuthentication, (req, res) => {
+    res.render('room', {roomId: req.params.room, userId: userprofile.id })
 })
-
-
 
 //io
 io.on('connection', socket => {
-    socket.on('join-room', (roomId, userId) => {
+    socket.on('join-room', (roomId) => {
         socket.join(roomId)
-        socket.to(roomId).broadcast.emit('user-connected', userId);
+        socket.to(roomId).broadcast.emit('user-connected', userprofile.id);
         socket.on('disconnect', () => {
-            socket.to(roomId).broadcast.emit('user-disconnected', userId)
+            socket.to(roomId).broadcast.emit('user-disconnected', userprofile.id)
         })
     })
 })

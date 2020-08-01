@@ -4,21 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Call</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <style>
         .container{
             height: 90vh;
             width: 100vw;
+            display: block;
+            margin: auto;
         }
-        #myVideo{
-            padding: 0 70px;
-            height: 50vh;
-        }
-        html,body{
-            height: 100vh;
-            width: 100vw;
-            overflow-x: hidden;
+        .para{
+            padding: 0 50px;
         }
         .para h1{
             margin: 0 0 20px 0;
@@ -37,6 +34,9 @@
             font-size: 18px;
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             margin:0 10px 0 0 ;
+        }
+        #myVideo{
+            padding:0 20px;
         }
     </style>
     <script>
@@ -59,34 +59,32 @@
     </script>
 </head>
 <body onload="loaded()">
-    <nav class="navbar navbar-expand-sm navbar-light" style="background-color: transparent">
-        <a class="navbar-brand" href="#">WE-dio</a>
-        <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
-            aria-expanded="false" aria-label="Toggle navigation"></button>
-        <div class="collapse navbar-collapse" id="collapsibleNavId">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+    
+    <nav class="navbar d-flex justify-content-between align-items-center navbar-light" style="background-color:transparent;">
+        <a class="navbar-brand" href="#">SIP 2020</a>
+        <% if (user) { %>
+            <div class="d-flex">
+                <li class="nav-item list-unstyled">
+                    <a class="nav-link text-dark" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                <li class="nav-item list-unstyled">
+                    <a class="nav-link text-dark" href="#"><%= user.displayName %></a>
                 </li>
-            </ul>
-        </div>
+            </div>
+        <%} else { %>
+            <a href="/google" id="login-btn" class=''><button class="btn btn-info">Login with Google</button></a>
+        <% } %>
     </nav>
-
-
-    <div class="container d-flex justify-content-around align-items-center">
-        <video id='myVideo'></video>
-        <div class="para">
-            <h1>Meeting created </h1>
+    <div class="container d-flex justify-content-center align-items-center row">
+        <video id="myVideo" class="col-md-7 col-sm-2"></video>
+        <div class="para col-md-5 col-sm-12">
+            <h1>Meeting Created!</h1>
             <hr>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo natus reiciendis beatae. Id molestias distinctio optio repellat iusto aut, perferendis beatae</p>
+            <p>Lorem ipsum dolor sit amet  recusandae expedita, quisquam iure voluptatibus molestiae perferendis quas adipisci corrupti consectetur magnam veniam amet aliquid voluptate atque incidunt cumque!</p>
             <hr>
-            <a href="http://localhost:3000<%= roomId %>"><button class="btn btn-info">Join Room</button></a>
+            <a href="http://localhost:3000<%= roomId %>"><button type="button" class="btn btn-info">Join</button></a>
+            <a href="/join"><button type="button" class="btn btn-outline-info">Copy code</button></a>
         </div>
     </div>
-
-
 </body>
 </html>

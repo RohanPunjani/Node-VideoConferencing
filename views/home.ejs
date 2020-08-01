@@ -4,15 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Call</title>
-    <script>
-        const USER_ID = "<%= user.id %>";
-        if(USER_ID)
-        {
-            document.getElementById('user').classList.remove('d-none');
-            document.getElementById('login-btn').classList.add('d-none');
-        }
-
-    </script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         html,body{
@@ -48,9 +40,19 @@
 <body>
     
     <nav class="navbar d-flex justify-content-between align-items-center navbar-light" style="background-color:transparent;">
-            <a class="navbar-brand" href="#">SIP 2020</a>
+        <a class="navbar-brand" href="#">SIP 2020</a>
+        <% if (user) { %>
+            <div class="d-flex">
+                <li class="nav-item list-unstyled">
+                    <a class="nav-link text-dark" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                </li>
+                <li class="nav-item list-unstyled">
+                    <a class="nav-link text-dark" href="#"><%= user.displayName %></a>
+                </li>
+            </div>
+        <%} else { %>
             <a href="/google" id="login-btn" class=''><button class="btn btn-info">Login with Google</button></a>
-            <p class="d-none" id="user-welcome">Welcome, <%= user.name %></p>
+        <% } %>
     </nav>
     <div class="container d-flex justify-content-center align-items-center row">
         <div class="para col-md-6 col-sm-12">
