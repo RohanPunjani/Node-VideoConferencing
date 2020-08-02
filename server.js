@@ -30,8 +30,10 @@ app.use(restify.plugins.queryParser({ mapParams: false }));
 
 
 var userprofile;
+var USER;
 //passport
 passport.serializeUser(function(user, done) {
+    USER = user;
     done(null, user);
 });
 passport.deserializeUser(function(id, done) {
@@ -64,7 +66,7 @@ app.get('/', (req, res) => {
     res.redirect('home');
 })
 app.get('/home', (req, res) => {
-    res.render('home', {user: userprofile});
+    res.render('home', {user: USER});
 })
 app.get('/create', checkAuthentication, (req,res) => {
     const roomid =  Math.random().toString(36).substr(2, 9);
