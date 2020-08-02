@@ -9,9 +9,6 @@
     <link rel="stylesheet" href="css/roomStyle.css">
     <script>
         const ROOM_ID = "<%= roomId %>"
-        const USER_ID = "<%= user.id %>"
-        console.log("User => <%= user.emails[0].value %>");
-        
     </script>
     <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js" defer></script>
     <script src="/socket.io/socket.io.js" defer></script>
@@ -48,27 +45,26 @@
         </div>
     </div>
     <div class="call-controls d-flex justify-content-around align-items-center">
-        <% if (host && user.id == host.id) { %>
-        <button type="button" class="btn">ask a question</button>
-        <% } else { %>
-        <button class="btn">RAise hand</button>
-        <% } %>
+        <button class="btn" id="raise">RAise hand</button>
         <div class="btn-group" role="group" aria-label="Button group">
-        <button type="button" id="audio-btn" class="btn btn-danger">Audio</button>
-        <a href="/home"><button type="button" class="btn btn-danger">Hang Up</button></a>
-        <button type="button" id="video-btn" class="btn btn-danger">Video</button>
+            <a href="/home"><button type="button" class="btn btn-danger">Hang Up</button></a>
         </div>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script>
-        
+        const raiseBtn  = document.querySelector('#raise');
         const form = document.querySelector("form");
         const input = document.querySelector("#m");
         const messages = document.querySelector("#messages");
-        const username = "<%= user.displayName %>";
+        const username = Math.random().toString(36).substr(2, 9);
         const socket = io();
 
+        raiseBtn.addEventListener('click', function(event){
+            event.preventDefault();
+            addMessage(username + " raised his hand");
+            socket.emit("raised_hand",{});
+        })
         form.addEventListener("submit", function(event) {
             event.preventDefault();
 
@@ -84,6 +80,9 @@
 
         socket.on("chat_message", function(data) {
             addMessage(data.username + ": " + data.message);
+        });
+        socket.on("raised_hand", function(data) {
+            addMessage(data.username + " raised his hand!");
         });
 
         socket.on("user_join", function(data) {

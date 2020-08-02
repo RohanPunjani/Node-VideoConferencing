@@ -83,8 +83,17 @@
             <p>Lorem ipsum dolor sit amet  recusandae expedita, quisquam iure voluptatibus molestiae perferendis quas adipisci corrupti consectetur magnam veniam amet aliquid voluptate atque incidunt cumque!</p>
             <hr>
             <a href="<%= roomId %>"><button type="button" class="btn btn-info">Join</button></a>
-            <a href=""><button type="button" class="btn btn-outline-info">Copy code</button></a>
+            <button type="button" class="btn btn-outline-info" onclick='copy_roomId()'>Copy code</button>
         </div>
     </div>
+    <input type="text" id='r_id' style="display: none;" value="<%= roomId %>">
+    <script>
+        function copy_roomId(){
+            const roomID = document.getElementById("r_id");
+            roomID.select();
+            document.execCommand('copy')
+            alert("Copied the text: " + roomID.value);
+        }
+    </script>
 </body>
 </html>

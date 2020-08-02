@@ -49,10 +49,10 @@ function checkAuthentication(req,res,next){
 passport.use(new GoogleStrategy({
     clientID: "189132062627-u5voq0flg0idbfhq5jf3oolo8a2ohmtd.apps.googleusercontent.com",
     clientSecret: "gjYJP396uGK8CFA9WkyMUtv3",
-    callbackURL: "https://quiet-dawn-40296.herokuapp.com/google/callback"
+    callbackURL: "http://localhost:3000/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-      userprofile = { ...profile};
+      userprofile = profile;
       return done(null, profile);
   }
 ));
@@ -62,8 +62,7 @@ app.get('/', (req, res) => {
     res.redirect('home');
 })
 app.get('/home', (req, res) => {
-    console.log(req.user)
-    res.render('home', {user: req.user});
+    res.render('home', {user: userprofile});
 })
 app.get('/create', checkAuthentication, (req,res) => {
     const roomid =  Math.random().toString(36).substr(2, 9);
@@ -71,32 +70,32 @@ app.get('/create', checkAuthentication, (req,res) => {
     res.render('create', {roomId: `/${roomid}`, user: userprofile})
 })
 app.get('/join', checkAuthentication,(req, res) => {
-    res.render('join')
+    res.render('join', {user: userprofile})
 })
 app.get('/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
-// app.get('/google/callback', passport.authenticate('google', {
-//     failureRedirect: '/failed'
-// }),(req, res) => {
-//     res.redirect("/home");
-// });
-app.get('/google/callback',passport.authenticate('google'),(req,res)=>{
-    req.logIn(req.user,(err)=>{
-         res.redirect('/home')
-    });  
-})
+app.get('/google/callback', passport.authenticate('google', {
+    failureRedirect: '/failed'
+}),(req, res) => {
+    res.redirect("/home");
+});
+// app.get('/google/callback',passport.authenticate('google'),(req,res)=>{
+//     req.logIn(req.user,(err)=>{
+//          res.redirect('/home')
+//     });  
+// })
 app.get("/failed", (req, res) => {
     res.send("You're failed To Login ,press F to continue");
 });
-app.get("/logout", checkAuthentication, (req,res) => {
+app.get("/logout", (req,res) => {
     req.session = null;
     userprofile = null;
     req.user = null;
     req.logout();
     res.redirect("/home");
 })
-app.get('/:room', checkAuthentication, (req, res) => {
+app.get('/:room', checkAuthentication,(req, res) => {
     res.render('room', {roomId: req.params.room, user: userprofile, host: host_user })
 })
 
@@ -118,6 +117,10 @@ io.on('connection', socket => {
     socket.on("chat_message", function(data) {
         data.username = this.username;
         socket.broadcast.emit("chat_message", data);
+    });
+    socket.on("raised_hand", function(data) {
+        data.username = this.username;
+        socket.broadcast.emit("raised_hand", data);
     });
 
     socket.on("disconnect", function(data) {
