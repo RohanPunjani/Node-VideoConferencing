@@ -11,12 +11,23 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <form>
-        <div class="form-group form">
-          <label for="exampleInputEmail1">Enter ID</label>
-          <input type="text" class="form-control" placeholder="Enter ID">
-        </div>
-    </form>
-    
+
+    <div class="container">
+        <form name="f1">
+            <div class="form-group form">
+            <label for="exampleInputEmail1">Enter ID</label>
+            <input type="text" class="form-control" name="t1" placeholder="Enter ID">
+            </div>
+            <button type="button" class="btn btn-success">Go</button>
+        </form>
+    </div>
+    <script>
+        $('.btn').click(function(){
+            
+            var x = f1.t1.value;
+            window.location.href = "http://localhost:3000/" + x;
+            
+        })
+    </script>
 </body>
 </html>

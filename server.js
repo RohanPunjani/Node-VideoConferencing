@@ -3,7 +3,7 @@ const express = require('express')
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
-const { v4: uuidV4 } = require('uuid')
+const { v1: uuidV4 } = require('uuid')
 const ejs = require("ejs");
 const cors = require('cors')
 const bodyParser = require("body-parser");
@@ -42,7 +42,7 @@ function checkAuthentication(req,res,next){
     if(userprofile){
         next();
     } else{
-        res.redirect("/home");
+        res.redirect("/google");
     }
 }
 passport.use(new GoogleStrategy({
@@ -62,6 +62,7 @@ passport.use(new GoogleStrategy({
 // Routes :)
 app.get('/home', (req, res) => {
     res.render('home', {user: userprofile});
+    // res.send(userprofile)
 })
 app.get('/create', checkAuthentication, (req,res) => {
     const roomid =  Math.random().toString(36).substr(2, 9);
@@ -76,7 +77,6 @@ app.get('/google', passport.authenticate('google', {
 app.get('/google/callback', passport.authenticate('google', {
     failureRedirect: '/failed'
 }),(req, res) => {
-    console.log(req.user);
     res.redirect("/home");
 });
 app.get("/failed", (req, res) => {
@@ -90,7 +90,7 @@ app.get("/logout", checkAuthentication, (req,res) => {
     res.redirect("/home");
 })
 app.get('/:room', checkAuthentication, (req, res) => {
-    res.render('grid', {roomId: req.params.room, user: userprofile })
+    res.render('room', {roomId: req.params.room, user: userprofile })
 })
 
 //io
@@ -102,6 +102,20 @@ io.on('connection', socket => {
             socket.to(roomId).broadcast.emit('user-disconnected', userId)
         })
     })
+    
+    socket.on("user_join", function(data) {
+        this.username = data;
+        socket.broadcast.emit("user_join", data);
+    });
+
+    socket.on("chat_message", function(data) {
+        data.username = this.username;
+        socket.broadcast.emit("chat_message", data);
+    });
+
+    socket.on("disconnect", function(data) {
+        socket.broadcast.emit("user_leave", this.username);
+    });
 })
 
 

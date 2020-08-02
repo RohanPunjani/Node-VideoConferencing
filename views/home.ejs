@@ -12,10 +12,15 @@
             width: 100vw;
             overflow-x: hidden;
         }
-        .container{
+        main{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
             height: 90vh;
-            width: 100vw;
-            margin: 0 10vw
+            padding: 0 10vw;
+        }
+        .para{
+            padding: 0 5vw;
         }
         .para h1{
             margin: 0 0 20px 0;
@@ -35,7 +40,15 @@
             font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
             margin:0 10px 0 0 ;
         }
+        .profile{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
     </style>
+    <script>
+    </script>
 </head>
 <body>
     
@@ -47,25 +60,40 @@
                     <a class="nav-link text-dark" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
                 </li>
                 <li class="nav-item list-unstyled">
-                    <a class="nav-link text-dark" href="#"><%= user.displayName %></a>
+                    <a class="nav-link text-dark" href="#"> 
+                        <img class="img-fluid rounded-circle" style="height: 4vh;" src="<%= user.photos[0].value %>" alt="">
+                        <%= user.displayName %></a>
                 </li>
             </div>
         <%} else { %>
             <a href="/google" id="login-btn" class=''><button class="btn btn-info">Login with Google</button></a>
         <% } %>
     </nav>
-    <div class="container d-flex justify-content-center align-items-center row">
-        <div class="para col-md-6 col-sm-12">
-            <h1>E-Learning Software</h1>
-            <hr>
-            <p>Lorem ipsum dolor sit amet  recusandae expedita, quisquam iure voluptatibus molestiae perferendis quas adipisci corrupti consectetur magnam veniam amet aliquid voluptate atque incidunt cumque!</p>
-            <hr>
-            <a href="/create"><button type="button" class="btn btn-info">Create Meeting</button></a>
-            <a href="/join"><button type="button" class="btn btn-outline-info">Join Meeting</button></a>
+    <main>
+        <div class="d-flex justify-content-center align-items-center row">
+            <div class="para col-md-6 col-sm-12">
+                <h1>E-Learning Software</h1>
+                <hr>
+                <p>Lorem ipsum dolor sit amet  recusandae expedita, quisquam iure voluptatibus molestiae perferendis quas adipisci corrupti consectetur magnam veniam amet aliquid voluptate atque incidunt cumque!</p>
+                <hr>
+                <a href="/create"><button type="button" class="btn btn-info">Create Meeting</button></a>
+                <a href="/join"><button type="button" class="btn btn-outline-info">Join Meeting</button></a>
+            </div>
+            <% if (user) { %>
+                
+            <div class="para profile col-md-6 col-sm-12">
+                <h1>You are all set!</h1>
+                <img class="img-fluid rounded-circle" src="<%= user.photos[0].value %>" alt="">
+                <h1 style="margin: 20px 0 0 0"><%= user.displayName %></h1>
+                <p>Email: <%= user.emails[0].value %></p>
+            </div>
+            <%} else { %>       
+            <div class="img-container col-md-6 col-sm-12">
+                <img src="Images/conference.png" class="img-responsive" alt="">
+            </div>
+            <% } %>
         </div>
-        <div class="img-container col-md-6 col-sm-12">
-            <img src="Images/conference.png" class="img-responsive" alt="">
-        </div>
-    </div>
+    </main>
+    
 </body>
 </html>
