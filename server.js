@@ -33,7 +33,6 @@ var userprofile;
 var USER;
 //passport
 passport.serializeUser(function(user, done) {
-    USER = user;
     done(null, user);
 });
 passport.deserializeUser(function(id, done) {
@@ -44,7 +43,7 @@ function checkAuthentication(req,res,next){
     if(userprofile){
         next();
     } else{
-        res.redirect("/google");
+        res.redirect("/");
     }
 }
 passport.use(new GoogleStrategy({
@@ -58,15 +57,12 @@ passport.use(new GoogleStrategy({
   }
 ));
 let host_user = null;
-
-
-
 // Routes :)
 app.get('/', (req, res) => {
     res.redirect('home');
 })
 app.get('/home', (req, res) => {
-    res.render('home', {user: USER});
+    res.render('home', {user: userprofile});
 })
 app.get('/create', checkAuthentication, (req,res) => {
     const roomid =  Math.random().toString(36).substr(2, 9);
@@ -79,11 +75,16 @@ app.get('/join', checkAuthentication,(req, res) => {
 app.get('/google', passport.authenticate('google', {
     scope: ['profile', 'email']
 }));
-app.get('/google/callback', passport.authenticate('google', {
-    failureRedirect: '/failed'
-}),(req, res) => {
-    res.redirect("/home");
-});
+// app.get('/google/callback', passport.authenticate('google', {
+//     failureRedirect: '/failed'
+// }),(req, res) => {
+//     res.redirect("/home");
+// });
+app.get('/google/callback',passport.authenticate('google'),(req,res)=>{
+    req.logIn(req.user,(err)=>{
+         res.redirect('/home')
+    });  
+})
 app.get("/failed", (req, res) => {
     res.send("You're failed To Login ,press F to continue");
 });
@@ -125,4 +126,4 @@ io.on('connection', socket => {
 
 server.listen(process.env.PORT || 3000, function(){
     console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
-  });
+});
