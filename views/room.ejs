@@ -10,7 +10,6 @@
     <script>
         const ROOM_ID = "<%= roomId %>"
         const USER_ID = "<%= user.id %>"
-        console.log("Host => <%= host.emails[0].value %>");
         console.log("User => <%= user.emails[0].value %>");
         
     </script>
@@ -49,7 +48,7 @@
         </div>
     </div>
     <div class="call-controls d-flex justify-content-around align-items-center">
-        <% if (user.id == host.id) { %>
+        <% if (host && user.id == host.id) { %>
         <button type="button" class="btn">ask a question</button>
         <% } else { %>
         <button class="btn">RAise hand</button>

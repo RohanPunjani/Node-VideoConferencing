@@ -55,7 +55,7 @@ passport.use(new GoogleStrategy({
       return done(null, profile);
   }
 ));
-let host_user;
+let host_user = null;
 
 
 
