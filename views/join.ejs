@@ -9,17 +9,56 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        body{
+            
+            overflow: hidden;
+        }
+        .wrapper{
+            display: grid;
+            height: 90vh;
+            place-items: center;
+            grid-template-columns: 1fr 1fr;
+        }
+        .form{
+            width: 400px;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container">
-        <form name="f1">
-            <div class="form-group form">
-            <label for="exampleInputEmail1">Enter ID</label>
-            <input type="text" class="form-control" name="t1" placeholder="Enter ID">
+    
+    <nav class="navbar d-flex justify-content-between align-items-center navbar-light" style="background-color:transparent;">
+        <a class="navbar-brand" href="#">SIP 2020</a>
+        <% if (user) { %>
+            <div class="d-flex">
+                <li class="nav-item list-unstyled">
+                    <a class="nav-link text-dark" href="/logout"><i class="fa fa-sign-out" aria-hidden="true"></i></a>
+                </li>
+                <li class="nav-item list-unstyled">
+                    <a class="nav-link text-dark" href="#"> 
+                        <img class="img-fluid rounded-circle" style="height: 4vh;" src="<%= user.photos[0].value %>" alt="">
+                        <%= user.displayName %></a>
+                </li>
             </div>
-            <button type="button" class="btn btn-success">Go</button>
-        </form>
+        <%} else { %>
+            <a href="/google" id="login-btn" class=''><button class="btn btn-info">Login with Google</button></a>
+        <% } %>
+    </nav>
+
+    <div class="container">
+        <div class="wrapper row">
+            <form name="f1" class="col-md-6">
+                <div class="form-group form">
+                <label for="exampleInputEmail1">Enter ID</label>
+                <input type="text" class="form-control" name="t1" placeholder="Enter ID">
+                </div>
+                <button type="button" class="btn btn-success">Go</button>
+            </form>
+            <div class="img-container col-md-6">
+                <img src="../public/Images/team.svg" class="img-responsive" alt="">
+            </div>
+        </div>
     </div>
     <script>
         $('.btn').click(function(){
