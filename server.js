@@ -62,7 +62,8 @@ app.get('/', (req, res) => {
     res.redirect('home');
 })
 app.get('/home', (req, res) => {
-    res.render('home', {user: userprofile});
+    console.log(req.user)
+    res.render('home', {user: req.user});
 })
 app.get('/create', checkAuthentication, (req,res) => {
     const roomid =  Math.random().toString(36).substr(2, 9);
