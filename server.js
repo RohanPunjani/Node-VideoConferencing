@@ -49,7 +49,7 @@ function checkAuthentication(req,res,next){
 passport.use(new GoogleStrategy({
     clientID: "189132062627-u5voq0flg0idbfhq5jf3oolo8a2ohmtd.apps.googleusercontent.com",
     clientSecret: "gjYJP396uGK8CFA9WkyMUtv3",
-    callbackURL: "http://localhost:3000/google/callback"
+    callbackURL: "https://quiet-dawn-40296.herokuapp.com/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
       userprofile = profile;
