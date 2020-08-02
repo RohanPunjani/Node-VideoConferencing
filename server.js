@@ -52,7 +52,7 @@ passport.use(new GoogleStrategy({
     callbackURL: "https://quiet-dawn-40296.herokuapp.com/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-      userprofile = profile;
+      userprofile = { ...profile};
       return done(null, profile);
   }
 ));
@@ -62,12 +62,12 @@ app.get('/', (req, res) => {
     res.redirect('home');
 })
 app.get('/home', (req, res) => {
-    res.render('home', {user: req.user});
+    res.render('home', {user: userprofile});
 })
 app.get('/create', checkAuthentication, (req,res) => {
     const roomid =  Math.random().toString(36).substr(2, 9);
-    host_user = req.user;
-    res.render('create', {roomId: `/${roomid}`, user: req.user})
+    host_user = userprofile;
+    res.render('create', {roomId: `/${roomid}`, user: userprofile})
 })
 app.get('/join', checkAuthentication,(req, res) => {
     res.render('join')
