@@ -55,17 +55,20 @@ passport.use(new GoogleStrategy({
       return done(null, profile);
   }
 ));
-
+let host_user;
 
 
 
 // Routes :)
+app.get('/', (req, res) => {
+    res.redirect('home');
+})
 app.get('/home', (req, res) => {
     res.render('home', {user: userprofile});
-    // res.send(userprofile)
 })
 app.get('/create', checkAuthentication, (req,res) => {
     const roomid =  Math.random().toString(36).substr(2, 9);
+    host_user = userprofile;
     res.render('create', {roomId: `/${roomid}`, user: userprofile})
 })
 app.get('/join', checkAuthentication,(req, res) => {
@@ -90,7 +93,7 @@ app.get("/logout", checkAuthentication, (req,res) => {
     res.redirect("/home");
 })
 app.get('/:room', checkAuthentication, (req, res) => {
-    res.render('room', {roomId: req.params.room, user: userprofile })
+    res.render('room', {roomId: req.params.room, user: userprofile, host: host_user })
 })
 
 //io
