@@ -62,12 +62,12 @@ app.get('/', (req, res) => {
     res.redirect('home');
 })
 app.get('/home', (req, res) => {
-    res.render('home', {user: userprofile});
+    res.render('home', {user: req.user});
 })
 app.get('/create', checkAuthentication, (req,res) => {
     const roomid =  Math.random().toString(36).substr(2, 9);
-    host_user = userprofile;
-    res.render('create', {roomId: `/${roomid}`, user: userprofile})
+    host_user = req.user;
+    res.render('create', {roomId: `/${roomid}`, user: req.user})
 })
 app.get('/join', checkAuthentication,(req, res) => {
     res.render('join')
