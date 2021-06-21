@@ -60,7 +60,8 @@ passport.use(
     {
       clientID:process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "http://localhost:3000/google/callback",
+      callbackURL: process.env.CALLBACK_URL,
+      // callbackURL: "http://localhost:3000/google/callback",
     },
     function (accessToken, refreshToken, profile, done) {
       return done(null, profile);
